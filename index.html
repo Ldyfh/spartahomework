@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="reset.css" />
+
+    <title>영화 검색</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+
+      header {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+      }
+
+      #app {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+      }
+
+      .movie-card {
+        border: 1px solid #ddd;
+        margin: 30px;
+        padding: 40px;
+        border-radius: 5px;
+        background-color: #fff;
+      }
+
+      input {
+        padding: 10px;
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .movie-card img {
+        float: right;
+        width: 130px;
+        height: 150px;
+        margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Movie Search</h1>
+    </header>
+
+    <div id="app">
+      <input type="text" id="searchInput" placeholder="Search movies..." />
+      <div id="movieList"></div>
+      <p id="noResultsMessage" style="color: red"></p>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const movieListElement = document.getElementById("movieList");
+        const searchInput = document.getElementById("searchInput");
+        const noResultsMessage = document.getElementById("noResultsMessage");
+
+        // 영화 데이터 배열
+        const movies = [
+          {
+            title: "노량 : 죽음의 바다",
+            genre: "액션",
+            year: 2023,
+            image:
+              "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMDdfNDgg%2FMDAxNzA0NjIxNjMwNzY1.edoP-ULDq08T5RGK3umR5pIzb02MDMf3Afew3EmVLT4g.c-d4XjnFyVdJUvn-fFfzidVQMqGsHL_TXbHOwmRNrQYg.JPEG.huani%2F%25B4%25D9%25BF%25EE%25B7%25CE%25B5%25E5.jpeg%25A3%25AD66.jpg&type=sc960_832",
+          },
+          {
+            title: "Winnie The Pooh: Blood and Honey",
+            genre: "공포",
+            year: 2023,
+            image: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzA0MDVfMjU3%2FMDAxNjgwNjMyMDM3MDUy.k0N50xk9bseb7HEO-fGhjrupAT283H1hgf2GvlwuKD0g.YpBfBBI-S3JrqU8a_824JQ9lK841nEDkN8Df8GHoa2Ug.PNG.showme20035%2Fimage.png&type=a340",
+          },
+          {
+            title: "거미집",
+            genre: "코메디",
+            year: 2023,
+            image:
+              "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMzBfMTE1%2FMDAxNzAzOTI0NDg0MzY1.QSlT5_puQJzXxp_YjWSHvLfPQBwgw7rmZml-nKa-XBsg.C2PJINyjicD9AtjJVSTpgILEDDFfWRjIANHsb5vk2DYg.JPEG.jkandy%2FIMG_7774.jpg&type=a340",
+          },
+          // ... (영화 데이터 계속 추가)
+        ];
+
+        // 영화 카드를 생성하는 함수
+        const createMovieCard = movie => {
+          const card = document.createElement("div");
+          card.classList.add("movie-card");
+          card.innerHTML = `<img src="${movie.image}" alt="${movie.title}" style="max-width: 100%;">
+           <h3>${movie.title}</h3>
+           <p>Genre: ${movie.genre}</p>
+           <p>Year: ${movie.year}</p>`;
+          return card;
+        };
+
+        // 영화 카드 리스트
+        const renderMovieList = movies => {
+          movieListElement.innerHTML = "";
+          noResultsMessage.textContent = ""; // 초기화
+          if (movies.length === 0) {
+            noResultsMessage.textContent = "찾는 영화가 없습니다.";
+          } else {
+            movies.forEach(movie => {
+              movieListElement.appendChild(createMovieCard(movie));
+            });
+          }
+        };
+
+        // 영화 검색 함수
+        const handleSearch = () => {
+          const searchTerm = searchInput.value.toLowerCase();
+          const filteredMovies = movies.filter(
+            movie =>
+              movie.title.toLowerCase().includes(searchTerm) ||
+              movie.genre.toLowerCase().includes(searchTerm) ||
+              movie.year.toString().includes(searchTerm)
+          );
+          renderMovieList(filteredMovies);
+        };
+
+        renderMovieList(movies);
+
+        // 검색 이벤트
+        searchInput.addEventListener("input", handleSearch);
+      });
+    </script>
+  </body>
+</html>
